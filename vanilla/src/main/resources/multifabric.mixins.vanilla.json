@@ -1,0 +1,10 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "minVersion": "0.8",
+  "package": "${group_id}.${project_id}.vanilla.mixin",
+  "required": false,
+  "mixins": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,19 +1,47 @@
 plugins {
-    id 'java'
+    id('java')
+    id('maven-publish')
+    id('com.github.johnrengelman.shadow') version('8.1.1')
+    id('fabric-loom') version('1.4-SNAPSHOT') apply(false)
+    id('net.neoforged.gradle.userdev') version('7.0.80') apply(false)
 }
 
-group = 'com.github.tatercertified'
-version = '1.0.0-SNAPSHOT'
+defaultTasks('build')
 
-repositories {
-    mavenCentral()
+subprojects {
+    apply(plugin: 'java')
+    apply(plugin: 'com.github.johnrengelman.shadow')
+
+    java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+    sourceCompatibility = targetCompatibility = 17
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+
+        // Minecraft
+        maven {
+            name = "minecraft-repo"
+            url = "https://libraries.minecraft.net/"
+        }
+
+        // Sponge
+        maven {
+            name = 'Sponge'
+            url = 'https://repo.spongepowered.org/maven'
+        }
+
+        maven {
+            name = 'sponge-repo'
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+    }
 }
 
-dependencies {
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-}
-
-test {
-    useJUnitPlatform()
+clean {
+    delete('target')
 }
